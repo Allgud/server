@@ -9,6 +9,13 @@ const ORIGIN = process.env.ORIGIN
 const server = http.createServer((req, res) => {
     const params = new URL(req.url, ORIGIN).searchParams
 
+    if(!params.has('hello') && !params.has('users')) {
+        res.writeHead(500, '', {
+            'Content-type': 'text/plain' 
+        })
+        res.end()
+    }
+
     if(params.has('users')) {
         res.writeHead(200, "OK", {
             'Content-type': 'application/json'
@@ -33,7 +40,10 @@ const server = http.createServer((req, res) => {
         }
     }
 
-    res.end()
+    res.writeHead(200, {
+        "Content-type": "text/plain"
+    })
+    res.end('Hello World')
 })
 
 server.listen(PORT, () => {
